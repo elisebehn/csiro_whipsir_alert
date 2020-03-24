@@ -1,6 +1,7 @@
 library(tidyverse)
+library(dplyr)
 whip_sir_data <- read_csv("data/raw_report_of_voice_calls.csv")
-sap_data <- read_csv("data/SAP_CONTACTINFO.csv")
+sap_data <- read_csv("data/SAP_CONTACTINFO.CSV")
 
 
 #This Script is used to pull togther data provied from the CSIRO WHipsir system and SAP system to 
@@ -19,7 +20,7 @@ whipsir_cut <- whip_sir_data %>%
   select(AdditionalTeamName, "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
          "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response" )
 
-clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident"))
-
-# next will need to select the columns we wish to use out of all the data.
-
+clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident")) %>% 
+  mutate(Number = 1:n()) %>% 
+  dplyr rename(AdditionalTeamName , "Ident") %>% 
+  arrange(Number,)
