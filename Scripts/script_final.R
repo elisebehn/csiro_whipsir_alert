@@ -16,3 +16,11 @@ whisper <- mutate(whipsir_cut2, row_num = rownames(whipsir_cut2))
 
 clean2 <- left_join(whisper, sap_data, by = c ("AdditionalTeamName" = "Ident"))
 
+change_name <- clean2 %>% 
+  rename(Ident = AdditionalTeamName)
+
+orderd <- change_name %>% 
+  select(row_num, everything())
+
+
+
