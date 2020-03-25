@@ -14,4 +14,4 @@ spread_data <- gather_numbers %>%
   spread(Addresstype, Contact_number) %>% 
   select(-grouped_id)
 
-write_csv(spread_data, path = "processed_data/contact_numbers")
+write_csv(spread_data, path = "processed_data/contact_numbers.csv")
