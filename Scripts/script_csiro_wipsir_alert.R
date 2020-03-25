@@ -1,5 +1,6 @@
 library(tidyverse)
 library(dplyr)
+
 whip_sir_data <- read_csv("data/raw_report_of_voice_calls.csv")
 sap_data <- read_csv("data/SAP_CONTACTINFO.CSV")
 
@@ -20,6 +21,7 @@ whipsir_cut <- whip_sir_data %>%
   select(AdditionalTeamName, "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
          "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response" )
 
+<<<<<<< HEAD
 clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident")) %>% mutate( Number = 1:n()) 
 
 #below wasnt working so have hashed out
@@ -32,3 +34,20 @@ clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident"
 #writing the finished file
 write_csv(clean, "data/combinedreport.csv")
 
+=======
+clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident"))
+
+data_for_HR <- rename(AdditionalTeamName = EmployeeIdent) %>% 
+  mutate(Number = 1:n()) %>% 
+  select(Number, everything())
+
+
+
+
+clean2 <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident")) %>% 
+  mutate(Number = 1:n()) %>% 
+  
+  
+  
+rename(AdditionalTeamName = EmployeeIdent)
+>>>>>>> 415e570004146db49f3f94bc2d677e0a46090fa2
