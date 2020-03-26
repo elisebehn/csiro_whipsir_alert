@@ -11,8 +11,7 @@ response <- stage_two %>%
   select("AdditionalTeamName", "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
          "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response" )
 
-no_response <- response %>% 
-  filter(Response != 2)
+no_response <- filter(response, is.na(Response))
 
 cleaned <- left_join(no_response, sap_data, by = c ("AdditionalTeamName" = "Ident"))
 
