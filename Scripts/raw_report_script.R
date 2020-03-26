@@ -39,3 +39,5 @@ change_to_ident <- combined_data %>%
 #put numbered column at front
 orderd <- change_to_ident %>% 
   select(row_num, everything())
+
+write_csv(spread_data, path = "processed_data/all_data_stage_1_2s.csv")
