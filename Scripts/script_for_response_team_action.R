@@ -18,6 +18,7 @@ cleaned <- left_join(no_response, sap_data, by = c ("AdditionalTeamName" = "Iden
 data_for_HR <- cleaned %>% 
   rename(EmployeeIdent = AdditionalTeamName) %>% 
   mutate(Number = 1:n()) %>% 
-  select(Number, everything())
+  select(Number, everything()) %>% 
+  mutate(comments = " ")
 
 write_csv(data_for_HR, path = "processed_data/Data_for_response_Team.csv")
