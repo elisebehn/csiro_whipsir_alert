@@ -21,4 +21,6 @@ data_for_HR <- cleaned %>%
   select(Number, everything()) %>% 
   mutate(comments = " ")
 
+sort_hr_data <- data_for_HR [c(1,2,12:43,3:11)]
+
 write_csv(data_for_HR, path = "processed_data/Data_for_response_Team.csv")
