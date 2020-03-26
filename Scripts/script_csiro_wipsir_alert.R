@@ -21,6 +21,20 @@ whipsir_cut <- whip_sir_data %>%
   select(AdditionalTeamName, "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
          "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response" )
 
+<<<<<<< HEAD
+clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident")) %>% mutate( Number = 1:n()) 
+
+#below wasnt working so have hashed out
+#%>%rename(AdditionalTeamName , "Ident") 
+#%>% 
+  #arrange(Number,)
+
+#sort by CSOFs to the top - employee group DESC
+
+#writing the finished file
+write_csv(clean, "data/combinedreport.csv")
+
+=======
 clean <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident"))
 
 data_for_HR <- rename(AdditionalTeamName = EmployeeIdent) %>% 
@@ -36,3 +50,4 @@ clean2 <- left_join(whipsir_cut, sap_data, by = c ("AdditionalTeamName" = "Ident
   
   
 rename(AdditionalTeamName = EmployeeIdent)
+>>>>>>> 415e570004146db49f3f94bc2d677e0a46090fa2
