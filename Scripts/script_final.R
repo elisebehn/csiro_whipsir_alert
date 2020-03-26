@@ -7,8 +7,11 @@ sap_data <- read_csv("data/SAP_CONTACTINFO.CSV")
 
 
 whipsir_cut2 <- whip_sir_data %>% 
-select("AdditionalTeamName", "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
-       "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response")
+select("AdditionalTeamName",	"Last Updated Time",	"Created Time",	"Message Label",	"Message Subject"	,
+       "Message Sent Time",	"Response Channel"	,"SMS Sent Time",
+       "SMS Received Time"	,"SMS Acknowledged Time"	,"SMS Undeliverable Time",
+       "Voice Sent Time",	"Voice Received Time"	,"Voice Acknowledged Time",	
+       "Voice Undeliverable Time"	,"Web Sent Time",	"Response")
 
 
 whisper <- mutate(whipsir_cut2, row_num = rownames(whipsir_cut2))
