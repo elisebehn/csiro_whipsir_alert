@@ -40,4 +40,4 @@ change_to_ident <- combined_data %>%
 orderd <- change_to_ident %>% 
   select(row_num, everything())
 
-write_csv(spread_data, path = "processed_data/all_data_stage_1_2s.csv")
+write_csv(orderd, path = "processed_data/all_data_stage_1_2s.csv")
