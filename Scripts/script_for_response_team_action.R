@@ -10,7 +10,7 @@ response <- stage_two %>%
          "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response" )
 
 no_response <- response %>% 
-  filter(Response == 2)
+  filter(Response != 2)
 
 cleaned <- left_join(no_response, sap_data, by = c ("AdditionalTeamName" = "Ident"))
 
