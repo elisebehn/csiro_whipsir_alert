@@ -20,4 +20,4 @@ data_for_HR <- cleaned %>%
   mutate(Number = 1:n()) %>% 
   select(Number, everything())
 
-write_csv(spread_data, path = "processed_data/Data_for_response_Team.csv")
+write_csv(data_for_HR, path = "processed_data/Data_for_response_Team.csv")
