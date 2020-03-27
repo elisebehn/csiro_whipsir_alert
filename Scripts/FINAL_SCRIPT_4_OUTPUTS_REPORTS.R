@@ -29,6 +29,10 @@ missing_from_whisper <- filter(remove_duplicate, is.na(FirstName))
   
 missing_from_SAP <- filter(remove_duplicate, is.na(Surname))
 
+
+
+#TRYING TO FIX THE FILTER FOR THE DATA WE PROVIDE TO HR REPSONSE TEAM
+
 #********************************
 
 Grab_data_stage_one <- stage_one %>% 
@@ -40,8 +44,18 @@ Grab_data_stage_two <- stage_two %>%
 final_response_both_stages <- full_join(Grab_data_stage_one, Grab_data_stage_two, by =c ("AdditionalTeamName"))
                                           
                                       
-filter_final_response <- filter(final_response_both_stages, is.na(Response.x), is.na(Response.y)) %>% 
-  mutate(include = "yes")
+filter_final_response <- filter(final_response_both_stages, !is.na(Response.x)| !is.na(Response.y)) %>% 
+  mutate(exclude = "yes") %>% 
+  select("AdditionalTeamName","exclude")
+
+grab_sap_data <- sap_data %>% 
+  select(Ident)
+
+
+full_list <- left_join(grab_sap_data,filter_final_response, by = c ("Ident" = "AdditionalTeamName"))
+
+
+
 
 #************************************
 
@@ -49,12 +63,12 @@ response <- stage_two %>%
   select("AdditionalTeamName", "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
          "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "Response" )
 
-include_filtered <- full_join(response,filter_final_response, by = c("AdditionalTeamName")) %>% 
+exclude_filtered <- left_join(response,full_list, by = c("AdditionalTeamName" = "Ident")) %>% 
   select("AdditionalTeamName", "Last Updated Time", "Created Time", "Message Subject",  "Message Sent Time",
-         "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "include" )
+         "Response Channel", "Voice Sent Time", "Voice Received Time", "Voice Acknowledged Time", "exclude" )
 
 
-no_response <- filter(include_filtered, include == "yes")
+no_response <- filter(exclude_filtered, is.na(exclude))
 
 cleaned <- left_join(no_response, sap_data, by = c ("AdditionalTeamName" = "Ident"))
 
