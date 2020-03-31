@@ -26,15 +26,11 @@ whipsir_cut <- whip_sir_data %>%
 clean <- left_join(sap_data, whipsir_cut, by = c ("Ident" = "AdditionalTeamName"))
 
 data_for_HR_RT <- clean %>% 
-  mutate(row_id = 1:n()) %>% 
-  select(row_id, everything()) %>% 
   mutate(Comments = " ") %>% 
-  filter(!is.na(FirstName))
+  filter(!is.na(FirstName)) %>% 
+  mutate(row_id = 1:n()) %>% 
+  select(row_id, everything())
 
 
-
-
-rename(AdditionalTeamName = EmployeeIdent)
-
-  write_csv(clean, "data/combinedreport.csv")
+write_csv(data_for_HR_RT, "processed_data/HR_Response_team_data.csv")
   
