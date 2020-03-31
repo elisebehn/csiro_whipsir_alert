@@ -5,6 +5,13 @@ stage_one <- read_csv("data/stage_one_sms.csv")
 sap_data <- read_csv("data/SAP_CONTACTINFO.CSV")
 stage_two <- read_csv("data/stage_two_phone_calls.csv")
 
+stage_one_cut <- stage_one %>% 
+  select("AdditionalTeamName","FirstName",	"LastName",
+         "Last Updated Time",	"Created Time",	"Message Label","Message Subject"	,
+         "Message Sent Time","Voice Sent Time")
+
+
+
 #incorporate SAP data to joined data set with contact details
 combined_data <- full_join(sap_data,stage_one_cut, by = c ("Ident" = "AdditionalTeamName"))
 
@@ -60,6 +67,6 @@ write_csv(remove_duplicate, path = "processed_data/Final_data_output_all_data.cs
 write_csv(missing_from_whisper, path = "processed_data/Final_data_missing_from_whispir.csv")
 write_csv(missing_from_SAP, path = "processed_data/Final_data_missing_from_sap.csv")
 
-summary()
+summarise
 
 
