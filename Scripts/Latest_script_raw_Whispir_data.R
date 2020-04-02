@@ -11,11 +11,11 @@ stage_one <- read_csv("data/stage_one_sms.csv")
 sap_data <- read_csv("data/SAP_CONTACTINFO.CSV")
 stage_two <- read_csv("data/stage_two_phone_calls.csv")
 
-#the below is a duplicate to stage_one_slice and not used- would delete?
-#stage_one_cut <- stage_one %>% 
- # select("AdditionalTeamName","FirstName",	"LastName",
-       #  "Last Updated Time",	"Created Time",	"Message Label","Message Subject"	,
-       #  "Message Sent Time","Voice Sent Time")
+
+stage_one_cut <- stage_one %>% 
+ select("AdditionalTeamName","FirstName",	"LastName",
+         "Last Updated Time",	"Created Time",	"Message Label","Message Subject"	,
+         "Message Sent Time","Voice Sent Time")
 
 
 
@@ -73,7 +73,8 @@ Response_team_report <- left_join(sap_data,results_from_whispir_both_stages, by 
   select(-"responded", -"Response_received") %>% 
   mutate(Row_ID = 1:n()) %>% 
   select(Row_ID, everything()) %>% 
-  mutate(comments = " ") %>% rename (Employee_Subgroup = 'Employee Subgroup') %>% filter(Employee_Subgroup != 'ATNF User')
+  mutate(comments = (ifelse(is.na(FirstName),"not picked up by Whispir", ""))) %>% rename (Employee_Subgroup = 'Employee Subgroup') %>% filter(Employee_Subgroup != 'ATNF User') %>% 
+    select(-FirstName, - LastName)
 
   #Last 2 steps above I added a filter to remove ATNF Users#
   
