@@ -5,7 +5,7 @@
 
 
 library(tidyverse)
-
+library(openxlsx)
 
 
 stage_one <- read_csv("data/stage_one_sms.csv")
@@ -92,8 +92,21 @@ summary <- all_data %>%
   summarise(Headcount =n()) %>% 
 spread(key = outcome, value = Headcount, fill = "" )  
 
-test = createworkbook()
+wb <- createWorkbook("summary_doc.xlsx")
+addWorksheet(wb, "summary")
+addWorksheet(wb, "data")
+addWorksheet(wb, "RESPONSE_TEAM_ACTION")
+addWorksheet(wb, "Missing_whispir")
+addWorksheet(wb, "Missing_SAP")
 
+writeData(wb,"summary", summary)
+writeData(wb, "data", all_data)
+writeData(wb, "RESPONSE_TEAM_ACTION", Response_team_report2)
+writeData(wb, "Missing_whispir", missing_from_whisper)
+writeData(wb, "Missing_SAP", missing_from_SAP)
+
+
+saveWorkbook(wb, "processed_data/summary.xlsx")
 
 write_csv(summary, path = "processed_data/summary.csv")    
 write_csv(all_data, path = "processed_data/all_results_with_sap.csv")  
