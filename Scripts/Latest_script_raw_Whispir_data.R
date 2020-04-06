@@ -92,6 +92,9 @@ summary <- all_data %>%
   summarise(Headcount =n()) %>% 
 spread(key = outcome, value = Headcount, fill = "" )  
 
+
+#BELOW IS MY PLAYING WITH OUTPUT TO ONE EXCEL DOCUMENT ON MULTIPLE SHEETS
+
 wb <- createWorkbook("summary_doc.xlsx")
 addWorksheet(wb, "summary")
 addWorksheet(wb, "data")
@@ -106,7 +109,7 @@ writeData(wb, "Missing_whispir", missing_from_whisper)
 writeData(wb, "Missing_SAP", missing_from_SAP)
 
 
-saveWorkbook(wb, "processed_data/summary.xlsx")
+saveWorkbook(wb, "processed_data/summary.xlsx", overwrite = TRUE)
 
 write_csv(summary, path = "processed_data/summary.csv")    
 write_csv(all_data, path = "processed_data/all_results_with_sap.csv")  
