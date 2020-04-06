@@ -61,29 +61,46 @@ results_from_whispir_both_stages <- left_join(stage_one_slice, remove_dup_test, 
 
 Response_team_report <- left_join(sap_data,results_from_whispir_both_stages, by = c ("Ident" = "AdditionalTeamName"))%>% 
   filter(is.na(Response_received)) #%>% 
-  
-  #The step below takes anyone who didnt make it into the whispir system out- these people are still relevant for the response team,
-  #should still be contacted
-  #filter(!is.na(FirstName)) %>% 
 
-  #The step below does nothing so would remove
-#filter(!is.na(Surname))
+
 
   Response_team_report2 <- Response_team_report %>%   
   select(-"responded", -"Response_received") %>% 
   mutate(Row_ID = 1:n()) %>% 
   select(Row_ID, everything()) %>% 
-  mutate(comments = (ifelse(is.na(FirstName),"not picked up by Whispir", ""))) %>% rename (Employee_Subgroup = 'Employee Subgroup') %>% filter(Employee_Subgroup != 'ATNF User') %>% 
-    select(-FirstName, - LastName)
+  mutate(comments = (ifelse(is.na(FirstName),"not picked up by Whispir", ""))) %>% 
+  rename (Employee_Subgroup = 'Employee Subgroup') %>% 
+  filter(Employee_Subgroup != 'ATNF User') %>% 
+  select(-FirstName, - LastName)
 
   #Last 2 steps above I added a filter to remove ATNF Users#
+
+
+
+
+all_data <- left_join(sap_data,results_from_whispir_both_stages, by = c ("Ident" = "AdditionalTeamName")) %>% 
+  mutate(outcome = case_when(is.na(FirstName) ~ "Not Picked up by Whispir",
+                             is.na(Surname) ~ "Missing from SAP",
+                             responded == "stage 1" ~ "Responded to Text",
+                             responded == "stage 2" ~ "Responded to Voicemail",
+                             is.na(responded) & !is.na(FirstName) ~ "No Response",
+                             TRUE ~ "Other")) 
   
+summary <- all_data %>% 
+  group_by(`State (Workplace)`, outcome) %>% 
+  summarise(Headcount =n()) %>% 
+spread(key = outcome, value = Headcount, fill = "" )  
+
+
+
+    
+write_csv(all_data, path = "processed_data/all_results_with_sap.csv")  
 write_csv(Response_team_report2, path = "processed_data/Final_Data_for_response_Team.csv")
 write_csv(remove_duplicate, path = "processed_data/Final_data_output_all_data.csv")
 write_csv(missing_from_whisper, path = "processed_data/Final_data_missing_from_whispir.csv")
 write_csv(missing_from_SAP, path = "processed_data/Final_data_missing_from_sap.csv")
 
-summarise(Response_team_report2, num_rows = n())
+
 
 #Actions from here- format the Final_Data_for_response_Team in excel- where phone numbers exit change column format to numeric, zero decimal
 #so you dont see exponential numbers. Bold the header. Send to Agnese. Check the missing from sap extract- these should all be ceased.
