@@ -7,6 +7,7 @@
 library(tidyverse)
 
 
+
 stage_one <- read_csv("data/stage_one_sms.csv")
 sap_data <- read_csv("data/SAP_CONTACTINFO.CSV")
 stage_two <- read_csv("data/stage_two_phone_calls.csv")
@@ -91,9 +92,10 @@ summary <- all_data %>%
   summarise(Headcount =n()) %>% 
 spread(key = outcome, value = Headcount, fill = "" )  
 
+test = createworkbook()
 
 
-    
+write_csv(summary, path = "processed_data/summary.csv")    
 write_csv(all_data, path = "processed_data/all_results_with_sap.csv")  
 write_csv(Response_team_report2, path = "processed_data/Final_Data_for_response_Team.csv")
 write_csv(remove_duplicate, path = "processed_data/Final_data_output_all_data.csv")
